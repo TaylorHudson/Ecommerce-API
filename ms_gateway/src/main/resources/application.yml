@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ms-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: ms-auth
+          uri: http://localhost:8100
+          predicates:
+            - Path=/**
+        - id: ms-products
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+        - id: ms-notification
+          uri: http://localhost:8050
+          predicates:
+            - Path=/**
+
+server:
+  port: 8000
+
+logging:
+  level:
+    web: debug

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ms-notification
+
+server:
+  port: 8050
