@@ -1,6 +1,43 @@
 spring:
   application:
     name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-products
+          predicates:
+            - Path=/products/**
+          filters:
+            - RewritePath=/products/(?<id>.*), /products/${id}
+            - AuthFilter
+          uri: http://localhost:8080
+
+        - id: ms-auth-users
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users/(?<id>.*), /users/${id}
+            - AuthFilter
+          uri: http://localhost:8100
+
+        - id: ms-auth-register
+          predicates:
+            - Path=/register
+          filters:
+            - RewritePath=/register, /users
+          uri: http://localhost:8100
+
+        - id: ms-auth-login
+          predicates:
+            - Path=/login
+          uri: http://localhost:8100
+
+        - id: ms-auth-validate-token
+          predicates:
+            - Path=/oauth/token/**
+          filters:
+            - RewritePath=/oauth/token/(?<token>.*), /oauth/token/${token}
+          uri: http://localhost:8100
 
 server:
   port: 8000
