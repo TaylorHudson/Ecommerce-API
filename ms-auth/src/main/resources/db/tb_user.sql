@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS tb_user (
+   `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+   `first_name` VARCHAR(150) NOT NULL,
+   `last_name` VARCHAR(150) NOT NULL,
+   `email` VARCHAR(200) NOT NULL,
+   `password` VARCHAR(255) NOT NULL
+);
