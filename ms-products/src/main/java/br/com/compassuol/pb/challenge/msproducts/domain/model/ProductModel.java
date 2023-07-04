@@ -1,10 +1,10 @@
 package br.com.compassuol.pb.challenge.msproducts.domain.model;
 
+import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.ProductRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
+@Builder
 public class ProductModel {
 
     @Id
@@ -28,6 +29,8 @@ public class ProductModel {
 
     private double price;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime date;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -37,4 +40,16 @@ public class ProductModel {
     )
     private Set<CategoryModel> categories;
 
+    public static class ProductModelBuilder {
+
+        public ProductModelBuilder request(ProductRequest request) {
+            this.name = request.getName();
+            this.description = request.getDescription();
+            this.price = request.getPrice();
+            this.imgUrl = request.getImgUrl();
+
+            return this;
+        }
+
+    }
 }
