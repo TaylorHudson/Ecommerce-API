@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -48,8 +49,12 @@ public class UserService {
     }
 
     public UserResponse update(Long id, UserRequest request) {
+        String email = request.getEmail();
+
         var oldUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id.toString()));
+
+        if (!Objects.equals(email, oldUser.getEmail()) & userRepository.existsByEmail(email)) throw new EmailAlreadyExistsException(request.getEmail());
 
         var user = UserModel.builder().request(request).build();
         user.setPassword(passwordEncoder.encode(request.getPassword()));
