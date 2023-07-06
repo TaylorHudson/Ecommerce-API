@@ -25,6 +25,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final PublisherEmailService publisherEmailService;
+
     public UserResponse create(UserRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
@@ -54,6 +56,8 @@ public class UserService {
         user.setRoles(toRoles(request.getRoles()));
         user.setId(id);
         var updated = userRepository.save(user);
+
+        publisherEmailService.sendChangedRegistrationMessage(updated);
 
         return createUserResponse(updated);
     }

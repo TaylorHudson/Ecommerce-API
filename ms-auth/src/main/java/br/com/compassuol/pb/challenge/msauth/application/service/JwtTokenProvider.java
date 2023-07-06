@@ -1,6 +1,5 @@
 package br.com.compassuol.pb.challenge.msauth.application.service;
 
-import br.com.compassuol.pb.challenge.msauth.domain.model.UserModel;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;

@@ -3,6 +3,7 @@ package br.com.compassuol.pb.challenge.msproducts.framework.adapters.in;
 import br.com.compassuol.pb.challenge.msproducts.application.service.CategoryService;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.CategoryRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.CategoryResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> create(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> create(@Valid @RequestBody CategoryRequest request) {
         var response = categoryService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -29,7 +30,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, @RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, @Valid @RequestBody CategoryRequest request) {
         var response = categoryService.update(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

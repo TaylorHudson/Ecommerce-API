@@ -31,7 +31,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> findById(@PathVariable Long id, @RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody UserRequest request) {
         var response = userService.update(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
