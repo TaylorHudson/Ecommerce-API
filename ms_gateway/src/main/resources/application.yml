@@ -9,34 +9,33 @@ spring:
             - Path=/products/**
           filters:
             - RewritePath=/products/(?<id>.*), /products/${id}
-            - AuthFilter
           uri: http://localhost:8080
 
-        - id: ms-auth-users
+        - id: ms-users
           predicates:
             - Path=/users/**
           filters:
             - RewritePath=/users/(?<id>.*), /users/${id}
-            - AuthFilter
-          uri: http://localhost:8100
+#            - AuthFilter
+          uri: http://localhost:8080
 
-        - id: ms-auth-register
+        - id: ms-register
           predicates:
             - Path=/register
           filters:
             - RewritePath=/register, /users
-          uri: http://localhost:8100
+          uri: http://localhost:8080
 
-        - id: ms-auth-login
+        - id: ms-login
           predicates:
             - Path=/login
-          uri: http://localhost:8100
+          uri: http://localhost:8080
 
         - id: ms-auth-validate-token
           predicates:
-            - Path=/oauth/token/**
+            - Path=/oauth/validate**
           filters:
-            - RewritePath=/oauth/token/(?<token>.*), /oauth/token/${token}
+            - RewritePath=/oauth/validate(?<token>.*), /oauth/token${token}
           uri: http://localhost:8100
 
 server:
