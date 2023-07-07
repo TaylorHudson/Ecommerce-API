@@ -16,7 +16,6 @@ spring:
             - Path=/users/**
           filters:
             - RewritePath=/users/(?<id>.*), /users/${id}
-#            - AuthFilter
           uri: http://localhost:8080
 
         - id: ms-roles
