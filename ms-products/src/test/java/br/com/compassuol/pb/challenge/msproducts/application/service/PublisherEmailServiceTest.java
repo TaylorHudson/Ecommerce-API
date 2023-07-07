@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import static br.com.compassuol.pb.challenge.msproducts.utils.UserUtil.userDefault;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,13 +22,19 @@ class PublisherEmailServiceTest {
     @InjectMocks
     private PublisherEmailService publisherEmailService;
 
+    @Value("${exchange.name}")
+    private String exchange;
+
+    @Value("${routing.key}")
+    private String routingKey;
+
     @Test
     void sendChangedRegistrationMessage() {
         var user = userDefault();
 
         publisherEmailService.sendChangedRegistrationMessage(user);
 
-        verify(rabbitTemplate).convertAndSend(eq("Direct-Exchange"), eq("email"), anyString());
+        verify(rabbitTemplate).convertAndSend(eq(exchange), eq(routingKey), anyString());
     }
 
     @Test

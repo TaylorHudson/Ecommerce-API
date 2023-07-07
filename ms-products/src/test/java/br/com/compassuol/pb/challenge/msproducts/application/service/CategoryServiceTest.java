@@ -1,6 +1,5 @@
 package br.com.compassuol.pb.challenge.msproducts.application.service;
 
-import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.CategoryRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.CategoryResponse;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
@@ -14,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static br.com.compassuol.pb.challenge.msproducts.utils.CategoryUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -107,26 +107,6 @@ class CategoryServiceTest {
 
         verify(categoryRepository).findById(anyLong());
         verify(categoryRepository, times(0)).delete(any(CategoryModel.class));
-    }
-
-    private CategoryRequest categoryRequestDefault() {
-        return CategoryRequest.builder()
-                .name("Category test")
-                .build();
-    }
-
-    private CategoryResponse categoryResponseDefault() {
-        return CategoryResponse.builder()
-                .id(1L)
-                .name("Category test")
-                .build();
-    }
-
-    private CategoryModel categoryDefault() {
-        return CategoryModel.builder()
-                .id(1L)
-                .name("Category test")
-                .build();
     }
 
 }

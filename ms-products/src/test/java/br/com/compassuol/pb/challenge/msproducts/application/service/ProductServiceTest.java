@@ -1,8 +1,6 @@
 package br.com.compassuol.pb.challenge.msproducts.application.service;
 
-import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.ProductRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.ProductResponse;
-import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.ProductModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.ProductRepository;
@@ -19,9 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 
+import static br.com.compassuol.pb.challenge.msproducts.utils.CategoryUtil.categoryDefault;
+import static br.com.compassuol.pb.challenge.msproducts.utils.ProductUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -175,49 +174,6 @@ class ProductServiceTest {
         verify(productRepository).findById(anyLong());
         verify(categoryRepository, times(0)).findById(anyLong());
         verify(productRepository, times(0)).save(any(ProductModel.class));
-    }
-
-    private ProductModel productDefault() {
-        var categories = new HashSet<CategoryModel>();
-        categories.add(categoryDefault());
-
-        return ProductModel.builder()
-                .name("Product test")
-                .description("Description test")
-                .price(12.5)
-                .categories(categories)
-                .build();
-    }
-
-    private ProductRequest productRequestDefault() {
-        var categories = new HashSet<Long>();
-        categories.add(1L);
-
-        return ProductRequest.builder()
-                .name("Product test")
-                .description("Description test")
-                .categories(categories)
-                .price(12.5)
-                .build();
-    }
-
-    private ProductResponse productResponseDefault() {
-        var categories = new HashSet<Long>();
-        categories.add(1L);
-
-        return ProductResponse.builder()
-                .name("Product test")
-                .description("Description test")
-                .categories(categories)
-                .price(12.5)
-                .build();
-    }
-
-    private CategoryModel categoryDefault() {
-        return CategoryModel.builder()
-                .id(1L)
-                .name("Category test")
-                .build();
     }
 
 }
