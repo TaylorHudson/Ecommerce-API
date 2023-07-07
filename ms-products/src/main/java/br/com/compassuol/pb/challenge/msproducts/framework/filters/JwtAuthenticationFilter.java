@@ -2,6 +2,7 @@ package br.com.compassuol.pb.challenge.msproducts.framework.filters;
 
 import br.com.compassuol.pb.challenge.msproducts.application.service.JwtTokenProvider;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.UserRepository;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidTokenException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -56,8 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 response.setHeader(HttpHeaders.AUTHORIZATION, request.getHeader(HttpHeaders.AUTHORIZATION));
             }
-        } catch (Exception exception) {
-            throw new BadCredentialsException(exception.getMessage());
+        } catch (InvalidTokenException ignored) {
+
         } finally {
             filterChain.doFilter(request, response);
         }

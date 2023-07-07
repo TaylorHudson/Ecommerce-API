@@ -6,6 +6,7 @@ import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.ProductModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.ProductRepository;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidPriceException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,6 +55,17 @@ class ProductServiceTest {
 
         verify(productRepository).save(any(ProductModel.class));
         verify(categoryRepository).findById(anyLong());
+    }
+
+    @Test
+    void createErrorInvalidPriceException() {
+        var request = productRequestDefault();
+        request.setPrice(0);
+
+        assertThrows(InvalidPriceException.class, () ->  productService.create(request));
+
+        verify(productRepository, times(0)).save(any(ProductModel.class));
+        verify(categoryRepository, times(0)).findById(anyLong());
     }
 
     @Test

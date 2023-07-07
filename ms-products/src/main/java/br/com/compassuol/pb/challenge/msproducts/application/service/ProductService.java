@@ -7,6 +7,7 @@ import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.ProductModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.ProductRepository;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidPriceException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,8 @@ public class ProductService {
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
+        if (request.getPrice() <= 0) throw new InvalidPriceException();
+
         var productModel = createProductModel(request);
         productModel.setDate(LocalDateTime.now());
         var saved = productRepository.save(productModel);

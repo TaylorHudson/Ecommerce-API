@@ -5,6 +5,7 @@ import br.com.compassuol.pb.challenge.msproducts.application.service.ProductServ
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.ProductRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.PageableResponse;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.ProductResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PostMapping
-    public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
         var response = productService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -34,7 +35,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @GetMapping
-    public ResponseEntity<PageableResponse<ProductResponse>> findById(
+    public ResponseEntity<PageableResponse<ProductResponse>> findAll(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "linesPerPage", required = false, defaultValue = "10") int linesPerPage,
             @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction,
@@ -53,7 +54,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
         var response = productService.update(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

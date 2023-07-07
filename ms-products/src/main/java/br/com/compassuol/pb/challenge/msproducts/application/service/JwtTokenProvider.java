@@ -1,9 +1,8 @@
 package br.com.compassuol.pb.challenge.msproducts.application.service;
 
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidTokenException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -37,7 +36,7 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String getExpiration(String token) {
+    public String getExpiration(String token) throws InvalidTokenException {
         try {
             var claims = Jwts.parserBuilder()
                     .setSigningKey(key())
@@ -46,11 +45,11 @@ public class JwtTokenProvider {
                     .getBody();
             return String.valueOf(claims.getExpiration().toInstant());
         } catch (Exception e) {
-            throw new BadCredentialsException("Invalid Token received!");
+            throw new InvalidTokenException("The passed token is expired");
         }
     }
 
-    public String getEmail(String token) {
+    public String getEmail(String token) throws InvalidTokenException {
         try {
             var claims = Jwts.parserBuilder()
                     .setSigningKey(key())
@@ -59,19 +58,19 @@ public class JwtTokenProvider {
                     .getBody();
             return String.valueOf(claims.get("email"));
         } catch (Exception e) {
-            throw new BadCredentialsException("Invalid Token received!");
+            throw new InvalidTokenException("The passed token is expired");
         }
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws InvalidTokenException {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key())
-                    .build()
-                    .parse(token);
-            return true;
-        } catch (MalformedJwtException ex) {
-            throw new RuntimeException("Invalid JWT token");
+        Jwts.parserBuilder()
+                .setSigningKey(key())
+                .build()
+                .parse(token);
+        return true;
+        } catch (Exception ex) {
+            throw new InvalidTokenException("The passed token is invalid");
         }
     }
 
