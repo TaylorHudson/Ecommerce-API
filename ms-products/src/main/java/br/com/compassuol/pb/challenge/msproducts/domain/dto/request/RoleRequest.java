@@ -8,10 +8,10 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@Builder
-public class CategoryRequest {
-    @Size(min = 5, message = "The category name must contain at least 5 characters")
+public class RoleRequest {
+    @Size(min = 8,message = "The role name must contain at least 8 characters")
     private String name;
 }

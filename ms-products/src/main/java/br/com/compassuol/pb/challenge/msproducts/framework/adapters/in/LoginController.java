@@ -3,6 +3,7 @@ package br.com.compassuol.pb.challenge.msproducts.framework.adapters.in;
 import br.com.compassuol.pb.challenge.msproducts.application.service.AuthService;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.LoginRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.JwtTokenResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class LoginController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<JwtTokenResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<JwtTokenResponse> login(@Valid @RequestBody LoginRequest request) {
         var response = authService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

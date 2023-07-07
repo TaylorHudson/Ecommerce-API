@@ -1,4 +1,4 @@
-package br.com.compassuol.pb.challenge.msnotification;
+package br.com.compassuol.pb.challenge.msnotification.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

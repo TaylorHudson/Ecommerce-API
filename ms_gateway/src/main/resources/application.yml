@@ -16,7 +16,13 @@ spring:
             - Path=/users/**
           filters:
             - RewritePath=/users/(?<id>.*), /users/${id}
-#            - AuthFilter
+          uri: http://localhost:8080
+
+        - id: ms-roles
+          predicates:
+            - Path=/roles/**
+          filters:
+            - RewritePath=/roles/(?<id>.*), /roles/${id}
           uri: http://localhost:8080
 
         - id: ms-register

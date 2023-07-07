@@ -1,5 +1,6 @@
-package br.com.compassuol.pb.challenge.msnotification;
+package br.com.compassuol.pb.challenge.msnotification.service;
 
+import br.com.compassuol.pb.challenge.msnotification.model.EmailModel;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;

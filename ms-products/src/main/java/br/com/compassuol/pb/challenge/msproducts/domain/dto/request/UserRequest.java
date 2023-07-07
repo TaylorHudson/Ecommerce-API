@@ -1,40 +1,27 @@
 package br.com.compassuol.pb.challenge.msproducts.domain.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class UserRequest {
 
-    @NotNull
-    @NotEmpty
     private String firstName;
 
-    @NotNull
-    @NotEmpty
     private String lastName;
 
-    @Email
-    @NotNull
-    @NotEmpty
+    @Email(message = "Invalid email")
     private String email;
 
-    @Min(8)
-    @NotNull
-    @NotEmpty
+    @Size(min = 8,message = "The password must contain at least 8 characters")
     private String password;
 
-    @NotNull
-    @NotEmpty
     private Set<Long> roles;
 
 }

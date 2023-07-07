@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ms-products
+  datasource:
+    url: jdbc:mysql://localhost:3300/challenge3-ms-products
+    username: root
+    password: root
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8080
+
+exchange:
+  name: amq.direct
+routing:
+  key: email
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
