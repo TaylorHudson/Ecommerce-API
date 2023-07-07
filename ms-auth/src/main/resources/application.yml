@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ms-auth
+  datasource:
+    url: jdbc:mysql://localhost:3306/challenge3-ms-products?createDatabaseIfNotExist=true
+    username: root
+    password: root
+
+server:
+  port: 8100
