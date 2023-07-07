@@ -1,11 +1,3 @@
 spring:
-  application:
-    name: ms-products
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/challenge3-ms-products?createDatabaseIfNotExist=true
-    username: root
-    password: root
-
-server:
-  port: 8080
+  profiles:
+    active: prod
