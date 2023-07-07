@@ -1,7 +1,7 @@
 package br.com.compassuol.pb.challenge.msnotification.consumer;
 
-import br.com.compassuol.pb.challenge.msnotification.EmailModel;
-import br.com.compassuol.pb.challenge.msnotification.EmailService;
+import br.com.compassuol.pb.challenge.msnotification.model.EmailModel;
+import br.com.compassuol.pb.challenge.msnotification.service.EmailService;
 import br.com.compassuol.pb.challenge.msnotification.dto.EmailDTO;
 import br.com.compassuol.pb.challenge.msnotification.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
