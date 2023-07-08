@@ -36,7 +36,7 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private PublisherEmailService publisherEmailService;
+    private NotificationServiceFeign notificationServiceFeign;
 
     @InjectMocks
     private UserService userService;
