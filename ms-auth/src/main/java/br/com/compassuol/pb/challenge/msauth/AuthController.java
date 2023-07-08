@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/oauth")
@@ -16,17 +15,15 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class AuthController {
 
+    private final AuthServiceFeign authServiceFeign;
+
     @PostMapping("/token")
     public ResponseEntity<?> auth(@RequestParam String token) {
         log.info("Trying to validate token {}", token);
 
-        var restTemplate = new RestTemplate();
-        var uri = "http://localhost:8080/oauth/validate?token=" + token;
-
         try {
-            var response = restTemplate.postForEntity(uri, null, AuthResponse.class);
-            var status = response.getStatusCode();
-            return ResponseEntity.status(status).build();
+            authServiceFeign.auth(token);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }catch (Exception e) {
             log.info("Failed to validate token {}", token);
         }

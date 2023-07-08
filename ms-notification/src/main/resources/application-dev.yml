@@ -1,7 +1,10 @@
 spring:
   application:
     name: ms-notification
-
+  datasource:
+    url: jdbc:mysql://localhost:3300/challenge3-ms-notification?createDatabaseIfNotExist=true
+    username: root
+    password: root
   mail:
     host: smtp.gmail.com
     port: 587
@@ -13,7 +16,6 @@ spring:
           auth: true
           starttls:
             enable: true
-
   rabbitmq:
     host: localhost
     port: 5672
@@ -23,5 +25,16 @@ spring:
 queue:
   name: Email
 
+exchange:
+  name: amq.direct
+routing:
+  key: email
+
 server:
   port: 8050
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG

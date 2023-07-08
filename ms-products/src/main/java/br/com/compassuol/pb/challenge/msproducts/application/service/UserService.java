@@ -1,5 +1,6 @@
 package br.com.compassuol.pb.challenge.msproducts.application.service;
 
+import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.EmailRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.UserRequest;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.UserResponse;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.Role;
@@ -11,6 +12,7 @@ import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNot
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,7 +28,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final PublisherEmailService publisherEmailService;
+    private final NotificationServiceFeign notificationServiceFeign;
 
     public UserResponse create(UserRequest request) {
         String email = request.getEmail();
@@ -48,6 +50,7 @@ public class UserService {
         return createUserResponse(user);
     }
 
+    @Transactional
     public UserResponse update(Long id, UserRequest request) {
         String email = request.getEmail();
 
@@ -62,7 +65,7 @@ public class UserService {
         user.setId(id);
         var updated = userRepository.save(user);
 
-        publisherEmailService.sendChangedRegistrationMessage(updated);
+        notificationServiceFeign.create(EmailRequest.builder().toEmail(updated.getEmail()).build());
 
         return createUserResponse(updated);
     }
