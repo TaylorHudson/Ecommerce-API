@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-products
+          predicates:
+            - Path=/products/**
+          filters:
+            - RewritePath=/products/(?<id>.*), /products/${id}
+          uri: http://localhost:8080
+
+        - id: ms-users
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users/(?<id>.*), /users/${id}
+          uri: http://localhost:8080
+
+        - id: ms-roles
+          predicates:
+            - Path=/roles/**
+          filters:
+            - RewritePath=/roles/(?<id>.*), /roles/${id}
+          uri: http://localhost:8080
+
+        - id: ms-register
+          predicates:
+            - Path=/register
+          filters:
+            - RewritePath=/register, /users
+          uri: http://localhost:8080
+
+        - id: ms-login
+          predicates:
+            - Path=/login
+          uri: http://localhost:8080
+
+        - id: ms-auth-validate-token
+          predicates:
+            - Path=/oauth/validate**
+          filters:
+            - RewritePath=/oauth/validate(?<token>.*), /oauth/token${token}
+          uri: http://localhost:8100
+
+server:
+  port: 8000
+
+logging:
+  level:
+    web: debug
