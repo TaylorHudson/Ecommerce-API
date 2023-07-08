@@ -65,13 +65,6 @@ public class GlobalExceptionHandler {
         return createError(e);
     }
 
-    @ExceptionHandler(MessageCouldNotBeSentToQueueException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handle(MessageCouldNotBeSentToQueueException e) {
-        return createError(e);
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
