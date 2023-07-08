@@ -10,10 +10,6 @@ spring:
 server:
   port: 8080
 
-exchange:
-  name: amq.direct
-routing:
-  key: email
 
 logging:
   level:

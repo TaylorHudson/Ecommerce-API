@@ -1,6 +1,5 @@
 package br.com.compassuol.pb.challenge.msproducts.application.service;
 
-import br.com.compassuol.pb.challenge.msproducts.framework.exception.MessageCouldNotBeSentToQueueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
