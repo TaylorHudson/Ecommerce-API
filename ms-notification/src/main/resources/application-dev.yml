@@ -33,6 +33,11 @@ routing:
 server:
   port: 8050
 
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
 logging:
   level:
     org:

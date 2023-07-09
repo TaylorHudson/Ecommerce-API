@@ -5,10 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(
-        value = "notification-service-feign",
-        url = "http://localhost:8050"
-)
+@FeignClient(value = "ms-notification")
 public interface NotificationServiceFeign {
     @PostMapping("/email")
     String create(@RequestBody EmailRequest request);

@@ -1,15 +1,30 @@
 spring:
   application:
     name: ms-products
-
   datasource:
-    url: jdbc:mysql://localhost:3306/challenge3-ms-products?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3300/challenge3-ms-products?createDatabaseIfNotExist=true
     username: root
     password: root
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: 8080
 
+feign:
+  client:
+    config:
+      default:
+        connectionTimeout: 5000
+        readTimeout: 5000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 
 logging:
   level:
