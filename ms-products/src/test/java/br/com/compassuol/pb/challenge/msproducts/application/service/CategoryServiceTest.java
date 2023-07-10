@@ -3,6 +3,7 @@ package br.com.compassuol.pb.challenge.msproducts.application.service;
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.CategoryResponse;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.CategoryAlreadyExistsException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,18 @@ class CategoryServiceTest {
         assertEquals(expectedResponse.getName(), response.getName());
 
         verify(categoryRepository).save(any(CategoryModel.class));
+    }
+
+    @Test
+    void createErrorCategoryAlreadyExistsException() {
+        var request = categoryRequestDefault();
+
+        when(categoryRepository.existsByName(anyString())).thenReturn(true);
+
+        assertThrows(CategoryAlreadyExistsException.class, () -> categoryService.create(request));
+
+        verify(categoryRepository).existsByName(anyString());
+        verify(categoryRepository, times(0)).save(any(CategoryModel.class));
     }
 
     @Test
