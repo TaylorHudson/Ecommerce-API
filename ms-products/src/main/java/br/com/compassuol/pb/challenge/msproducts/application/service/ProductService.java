@@ -8,6 +8,7 @@ import br.com.compassuol.pb.challenge.msproducts.domain.model.ProductModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.ProductRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidPriceException;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.ProductAlreadyExistsException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
+        if (productRepository.existsByName(request.getName())) throw new ProductAlreadyExistsException(request.getName());
         if (request.getPrice() <= 0) throw new InvalidPriceException();
 
         var productModel = createProductModel(request);
@@ -73,6 +75,9 @@ public class ProductService {
     }
 
     public ProductResponse update(Long id, ProductRequest request) {
+        if (productRepository.existsByName(request.getName())) throw new ProductAlreadyExistsException(request.getName());
+        if (request.getPrice() <= 0) throw new InvalidPriceException();
+
         var oldProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id.toString()));
 

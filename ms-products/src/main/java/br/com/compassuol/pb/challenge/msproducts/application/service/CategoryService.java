@@ -4,6 +4,7 @@ import br.com.compassuol.pb.challenge.msproducts.domain.dto.request.CategoryRequ
 import br.com.compassuol.pb.challenge.msproducts.domain.dto.response.CategoryResponse;
 import br.com.compassuol.pb.challenge.msproducts.domain.model.CategoryModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.CategoryAlreadyExistsException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public CategoryResponse create(CategoryRequest request) {
+        if (categoryRepository.existsByName(request.getName())) throw new CategoryAlreadyExistsException(request.getName());
+
         var category = toCategory(request);
         var saved = categoryRepository.save(category);
         return toResponse(saved);
@@ -29,6 +32,7 @@ public class CategoryService {
     }
 
     public CategoryResponse update(Long id, CategoryRequest request) {
+        if (categoryRepository.existsByName(request.getName())) throw new CategoryAlreadyExistsException(request.getName());
         categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id.toString()));
         var category = toCategory(request);

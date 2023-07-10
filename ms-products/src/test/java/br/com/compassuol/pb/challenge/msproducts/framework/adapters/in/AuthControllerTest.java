@@ -52,6 +52,21 @@ class AuthControllerTest {
 
     }
 
+    @Test
+    void authError() throws Exception {
+        when(authService.validate(anyString())).thenThrow(RuntimeException.class);
+
+        var result =
+                mockMvc.perform(post(BASE_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON))
+                        .andReturn();
+        var response = result.getResponse();
+
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatus());
+
+    }
+
     private AuthResponse authResponseDefault() {
         return AuthResponse.builder()
                 .id(1L)

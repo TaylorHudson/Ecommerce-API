@@ -5,6 +5,7 @@ import br.com.compassuol.pb.challenge.msproducts.domain.model.ProductModel;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.CategoryRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.adapters.out.ProductRepository;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.InvalidPriceException;
+import br.com.compassuol.pb.challenge.msproducts.framework.exception.ProductAlreadyExistsException;
 import br.com.compassuol.pb.challenge.msproducts.framework.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +44,7 @@ class ProductServiceTest {
         var request = productRequestDefault();
         var expectedResponse = productResponseDefault();
 
+        when(productRepository.existsByName(anyString())).thenReturn(false);
         when(productRepository.save(any(ProductModel.class))).thenReturn(product);
         when(categoryRepository.findById(anyLong())).thenReturn(Optional.of(category));
 
@@ -52,6 +54,7 @@ class ProductServiceTest {
         assertEquals(expectedResponse.getDescription(), response.getDescription());
         assertEquals(expectedResponse.getPrice(), response.getPrice());
 
+        verify(productRepository).existsByName(anyString());
         verify(productRepository).save(any(ProductModel.class));
         verify(categoryRepository).findById(anyLong());
     }
@@ -61,11 +64,28 @@ class ProductServiceTest {
         var request = productRequestDefault();
         request.setPrice(0);
 
+        when(productRepository.existsByName(anyString())).thenReturn(false);
+
         assertThrows(InvalidPriceException.class, () ->  productService.create(request));
 
+        verify(productRepository).existsByName(anyString());
         verify(productRepository, times(0)).save(any(ProductModel.class));
         verify(categoryRepository, times(0)).findById(anyLong());
     }
+
+    @Test
+    void createErrorProductAlreadyExistsException() {
+        var request = productRequestDefault();
+
+        when(productRepository.existsByName(anyString())).thenReturn(true);
+
+        assertThrows(ProductAlreadyExistsException.class, () ->  productService.create(request));
+
+        verify(productRepository).existsByName(anyString());
+        verify(productRepository, times(0)).save(any(ProductModel.class));
+        verify(categoryRepository, times(0)).findById(anyLong());
+    }
+
 
     @Test
     void findByIdSuccess() {
@@ -172,6 +192,33 @@ class ProductServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> productService.update(1L, productRequestDefault()));
 
         verify(productRepository).findById(anyLong());
+        verify(categoryRepository, times(0)).findById(anyLong());
+        verify(productRepository, times(0)).save(any(ProductModel.class));
+    }
+
+    @Test
+    void updateErrorProductAlreadyExistsException() {
+        when(productRepository.existsByName(anyString())).thenReturn(true);
+
+        assertThrows(ProductAlreadyExistsException.class, () -> productService.update(1L, productRequestDefault()));
+
+        verify(productRepository).existsByName(anyString());
+        verify(productRepository, times(0)).findById(anyLong());
+        verify(categoryRepository, times(0)).findById(anyLong());
+        verify(productRepository, times(0)).save(any(ProductModel.class));
+    }
+
+    @Test
+    void updateErrorInvalidPriceException() {
+        var request = productRequestDefault();
+        request.setPrice(0);
+
+        when(productRepository.existsByName(anyString())).thenReturn(false);
+
+        assertThrows(InvalidPriceException.class, () -> productService.update(1L, request));
+
+        verify(productRepository).existsByName(anyString());
+        verify(productRepository, times(0)).findById(anyLong());
         verify(categoryRepository, times(0)).findById(anyLong());
         verify(productRepository, times(0)).save(any(ProductModel.class));
     }
